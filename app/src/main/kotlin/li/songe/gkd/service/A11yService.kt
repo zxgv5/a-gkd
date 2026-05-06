@@ -23,6 +23,7 @@ import li.songe.gkd.shizuku.shizukuContextFlow
 import li.songe.gkd.store.updateEnableAutomator
 import li.songe.gkd.util.AndroidTarget
 import li.songe.gkd.util.AutomatorModeOption
+import li.songe.gkd.util.DefaultA11yLifeImpl
 import li.songe.gkd.util.LogUtils
 import li.songe.gkd.util.OnA11yLife
 import li.songe.gkd.util.componentName
@@ -31,9 +32,9 @@ import li.songe.gkd.util.toast
 import kotlin.coroutines.resume
 
 @SuppressLint("AccessibilityPolicy")
-open class A11yService : AccessibilityService(), OnA11yLife, A11yCommonImpl {
+abstract class A11yService : AccessibilityService(), OnA11yLife by DefaultA11yLifeImpl(),
+    A11yCommonImpl {
     override val mode get() = AutomatorModeOption.A11yMode
-    override val scope = useScope()
     override val windowNodeInfo: AccessibilityNodeInfo? get() = rootInActiveWindow
     override val windowInfos: List<AccessibilityWindowInfo> get() = windows
     override suspend fun screenshot(): Bitmap? = suspendCancellableCoroutine { cont ->

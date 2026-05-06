@@ -9,19 +9,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import li.songe.loc.Loc
-import java.util.WeakHashMap
-
-private val cbMap = WeakHashMap<Any, HashMap<Int, MutableList<Any>>>()
 
 typealias CbFn = () -> Unit
 
 @Suppress("UNCHECKED_CAST")
-private fun <T> OnSimpleLife.cbs(method: Int): MutableList<T> = synchronized(cbMap) {
-    return cbMap.getOrPut(this) { hashMapOf() }
-        .getOrPut(method) { mutableListOf() } as MutableList<T>
+private fun <T> OnSimpleLife.cbs(method: Int): MutableList<T> = synchronized(this) {
+    return cbMap.getOrPut(method) { mutableListOf() } as MutableList<T>
 }
 
 interface OnSimpleLife {
+    val cbMap: HashMap<Int, MutableList<Any>>
+
     fun onCreated(f: CbFn) = cbs<CbFn>(1).add(f)
     fun onCreated() = cbs<CbFn>(1).forEach { it() }
 
@@ -45,7 +43,6 @@ interface OnSimpleLife {
     }
 
     val scope: CoroutineScope
-    fun useScope(): CoroutineScope = MainScope().apply { onDestroyed { cancel() } }
 
     fun useAliveFlow(stateFlow: MutableStateFlow<Boolean>) {
         onCreated { stateFlow.value = true }
@@ -77,10 +74,17 @@ interface OnSimpleLife {
     }
 }
 
+open class DefaultSimpleLifeImpl : OnSimpleLife {
+    override val cbMap: HashMap<Int, MutableList<Any>> = hashMapOf()
+    override val scope: CoroutineScope by lazy { MainScope().apply { onDestroyed { cancel() } } }
+}
+
 interface OnA11yLife : OnSimpleLife {
     fun onA11yConnected(f: CbFn) = cbs<CbFn>(3).add(f)
     fun onA11yConnected() = cbs<CbFn>(3).forEach { it() }
 }
+
+class DefaultTileLifeImpl : DefaultSimpleLifeImpl(), OnTileLife
 
 interface OnTileLife : OnSimpleLife {
     fun onStartListened(f: CbFn) = cbs<CbFn>(4).add(f)
@@ -92,3 +96,5 @@ interface OnTileLife : OnSimpleLife {
     fun onTileClicked(f: CbFn) = cbs<CbFn>(6).add(f)
     fun onTileClicked() = cbs<CbFn>(6).forEach { it() }
 }
+
+class DefaultA11yLifeImpl : DefaultSimpleLifeImpl(), OnA11yLife

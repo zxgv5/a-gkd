@@ -47,6 +47,7 @@ import li.songe.gkd.db.DbSet
 import li.songe.gkd.notif.StopServiceReceiver
 import li.songe.gkd.notif.httpNotif
 import li.songe.gkd.store.storeFlow
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.LOCAL_HTTP_SUBS_ID
 import li.songe.gkd.util.LogUtils
 import li.songe.gkd.util.OnSimpleLife
@@ -66,20 +67,10 @@ import li.songe.gkd.util.toast
 import li.songe.gkd.util.updateSubscription
 
 
-class HttpService : Service(), OnSimpleLife {
+class HttpService : Service(), OnSimpleLife by DefaultSimpleLifeImpl() {
     override fun onBind(intent: Intent?) = null
-
-    override fun onCreate() {
-        super.onCreate()
-        onCreated()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        onDestroyed()
-    }
-
-    override val scope = useScope()
+    override fun onCreate() = onCreated()
+    override fun onDestroy() = onDestroyed()
 
     val httpServerPortFlow = storeFlow.mapState(scope) { s -> s.httpServerPort }
 

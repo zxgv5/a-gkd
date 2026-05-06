@@ -3,22 +3,19 @@ package li.songe.gkd.service
 import android.app.Service
 import android.content.Intent
 import coil3.Bitmap
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withTimeoutOrNull
 import li.songe.gkd.app
 import li.songe.gkd.notif.StopServiceReceiver
 import li.songe.gkd.notif.screenshotNotif
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.LogUtils
 import li.songe.gkd.util.OnSimpleLife
 import li.songe.gkd.util.ScreenshotUtil
 import li.songe.gkd.util.componentName
 import li.songe.gkd.util.stopServiceByClass
 
-class ScreenshotService : Service(), OnSimpleLife {
-    override val scope: CoroutineScope
-        get() = throw NotImplementedError()
-
+class ScreenshotService : Service(), OnSimpleLife by DefaultSimpleLifeImpl() {
     override fun onBind(intent: Intent?) = null
     override fun onCreate() = onCreated()
     override fun onDestroy() = onDestroyed()

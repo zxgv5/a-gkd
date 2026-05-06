@@ -45,6 +45,7 @@ import li.songe.gkd.ui.home.HomeRoute
 import li.songe.gkd.ui.share.BaseViewModel
 import li.songe.gkd.util.AutomatorModeOption
 import li.songe.gkd.util.BackupUtils
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.LOCAL_SUBS_ID
 import li.songe.gkd.util.LogUtils
 import li.songe.gkd.util.OnSimpleLife
@@ -73,7 +74,7 @@ import java.nio.file.Files
 import kotlin.reflect.jvm.jvmName
 import kotlin.time.Duration.Companion.days
 
-class MainViewModel : BaseViewModel(), OnSimpleLife {
+class MainViewModel : BaseViewModel(), OnSimpleLife by DefaultSimpleLifeImpl() {
     companion object {
         private var _instance: MainViewModel? = null
         val instance get() = _instance!!

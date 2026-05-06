@@ -35,6 +35,7 @@ import li.songe.gkd.notif.StopServiceReceiver
 import li.songe.gkd.notif.trackNotif
 import li.songe.gkd.shizuku.casted
 import li.songe.gkd.util.AndroidTarget
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.OnSimpleLife
 import li.songe.gkd.util.ScreenUtils
 import li.songe.gkd.util.startForegroundServiceByClass
@@ -42,7 +43,8 @@ import li.songe.gkd.util.stopServiceByClass
 import kotlin.math.min
 import kotlin.math.pow
 
-class TrackService : LifecycleService(), SavedStateRegistryOwner, OnSimpleLife {
+class TrackService : LifecycleService(), SavedStateRegistryOwner,
+    OnSimpleLife by DefaultSimpleLifeImpl() {
     override fun onCreate() {
         super.onCreate()
         onCreated()

@@ -6,9 +6,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import li.songe.gkd.util.DefaultTileLifeImpl
 import li.songe.gkd.util.OnTileLife
 
-abstract class BaseTileService : TileService(), OnTileLife {
+abstract class BaseTileService : TileService(), OnTileLife by DefaultTileLifeImpl() {
     override fun onCreate() = onCreated()
     override fun onStartListening() = onStartListened()
     override fun onClick() = onTileClicked()
@@ -17,7 +18,6 @@ abstract class BaseTileService : TileService(), OnTileLife {
 
     abstract val activeFlow: StateFlow<Boolean>
 
-    override val scope = useScope()
     val listeningFlow = MutableStateFlow(false).apply {
         onStartListened { value = true }
         onStopListened { value = false }

@@ -45,6 +45,7 @@ import li.songe.gkd.ui.icon.DragPan
 import li.songe.gkd.ui.style.AppTheme
 import li.songe.gkd.ui.style.iconTextSize
 import li.songe.gkd.util.BarUtils
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.OnSimpleLife
 import li.songe.gkd.util.ScreenUtils
 import li.songe.gkd.util.mapState
@@ -102,7 +103,7 @@ private class ShareContext {
 
 abstract class OverlayWindowService(
     val positionKey: String,
-) : LifecycleService(), SavedStateRegistryOwner, OnSimpleLife {
+) : LifecycleService(), SavedStateRegistryOwner, OnSimpleLife by DefaultSimpleLifeImpl() {
     companion object {
         private var aliveSize = 0
         val isAnyAlive: Boolean

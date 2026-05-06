@@ -24,6 +24,7 @@ import li.songe.gkd.permission.writeSecureSettingsState
 import li.songe.gkd.shizuku.uiAutomationFlow
 import li.songe.gkd.store.actionCountFlow
 import li.songe.gkd.store.storeFlow
+import li.songe.gkd.util.DefaultSimpleLifeImpl
 import li.songe.gkd.util.OnSimpleLife
 import li.songe.gkd.util.RuleSummary
 import li.songe.gkd.util.appInfoMapFlow
@@ -32,12 +33,10 @@ import li.songe.gkd.util.ruleSummaryFlow
 import li.songe.gkd.util.startForegroundServiceByClass
 import li.songe.gkd.util.stopServiceByClass
 
-class StatusService : Service(), OnSimpleLife {
+class StatusService : Service(), OnSimpleLife by DefaultSimpleLifeImpl() {
     override fun onBind(intent: Intent?) = null
     override fun onCreate() = onCreated()
     override fun onDestroy() = onDestroyed()
-
-    override val scope = useScope()
 
     val shizukuWarnFlow = combine(
         shizukuGrantedState.stateFlow,
